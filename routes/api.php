@@ -64,13 +64,13 @@ Route::controller(SolutionsController::class)->group(function() {
 });
 
 Route::group(['namespace' => 'App\Http\Controllers\Posterminal'], function() {
-    Route::post('posterminal/lol',            'PosterminalController@show');
+    Route::post('posterminal/lol',             'PosterminalController@show');
     Route::post('posterminal/create',          'PosterminalController@create');
     Route::post('posterminal/update',          'PosterminalController@update');
     Route::post('posterminal/delete',          'PosterminalController@delete');
 
     Route::post('posterminal/restore',         'PosterminalController@restore');
-    Route::post('posterminal/deleted/show',  'PosterminalController@deletedShow');
+    Route::post('posterminal/deleted/show',    'PosterminalController@deletedShow');
 
     Route::post('posterminal/theme/show',      'ThemeController@show');
     Route::post('posterminal/theme/create',    'ThemeController@create');
