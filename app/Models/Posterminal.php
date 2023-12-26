@@ -19,4 +19,9 @@ class Posterminal extends Model
         'updated_at' => 'datetime:d/m/Y H:i',
     ];
 
+    public function requests()
+    {
+        return $this->hasMany(Posterminal_request::class, 'posterminal_id', 'id');
+    }
+
 }

@@ -10,7 +10,6 @@ use App\Http\Requests\Posterminal\UpdateRequest;
 
 class PosterminalController extends Controller
 {
-
     public function show()
     {
         try {
@@ -38,8 +37,7 @@ class PosterminalController extends Controller
     {
         $posterminal = $data->validated();
         try {
-            $posterminalOld = Posterminal::find($posterminal['id']);
-            $posterminalOld->update($posterminal);
+            Posterminal::find($posterminal['id'])->update($posterminal);
         } catch (\Throwable $th) {
             $th->methodt = 'update error';
             return response()->json(['95', $th]);
@@ -64,8 +62,8 @@ class PosterminalController extends Controller
     {
         try {
             $posterminal = Posterminal::onlyTrashed()
-            ->where('id', $data['id'])
-            ->get()[0]->restore();
+                ->where('id', $data['id'])
+                ->get()[0]->restore();
         } catch (\Throwable $th) {
             $th->methodt = 'restore error';
             return response()->json(['95', $th]);

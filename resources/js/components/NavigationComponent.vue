@@ -83,6 +83,9 @@
                                 <router-link class="nav-link" to="/posterminal/solutions">Solutions</router-link>
                             </li>
                             <li>
+                                <router-link class="nav-link" to="/posterminal/request">Request</router-link>
+                            </li>
+                            <li>
                                 <router-link class="nav-link" to="/posterminal/deleted">Deleted Posterminal</router-link>
                             </li>
                         </ul>
@@ -121,4 +124,3 @@
         name: 'NavigationComponent',
     }
 </script>
-<style src="/public/css/nav.css"></style>

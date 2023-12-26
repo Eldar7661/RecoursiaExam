@@ -20,7 +20,8 @@ import PostamatDeletedComponent from './components/postamat/PostamatDeletedCompo
 
 import PosterminalActiveComponent from './components/posterminal/PosterminalActiveComponent.vue';
 import PosterminalDefectiveComponent from './components/posterminal/PosterminalDefectiveComponent.vue';
-import PosterminalSolutionsComponent from './components/posterminal/PosterminalSolutionsComponent.vue';
+import PosterminalSolutionComponent from './components/posterminal/PosterminalSolutionComponent.vue';
+import PosterminalRequestComponent from './components/posterminal/PosterminalRequestComponent.vue';
 import PosterminalDeletedComponent from './components/posterminal/PosterminalDeletedComponent.vue';
 
 import CardomatActiveComponent from './components/cardomat/CardomatActiveComponent.vue';
@@ -48,10 +49,11 @@ export default createRouter({
         { path: '/postamat/solutions', component: PostamatSolutionsComponent, meta:{aHref:'postamat',title:'Postamat Solutions'}},
         { path: '/postamat/deleted',   component: PostamatDeletedComponent,   meta:{aHref:'postamat',title:'Postamat Deleted'}},
 
-        { path: '/posterminal/active',    component: PosterminalActiveComponent,    meta:{aHref:'posterminal',title:'Posterminal Active'}},
-        { path: '/posterminal/defective', component: PosterminalDefectiveComponent, meta:{aHref:'posterminal',title:'Posterminal Defective'}},
-        { path: '/posterminal/solutions', component: PosterminalSolutionsComponent, meta:{aHref:'posterminal',title:'Posterminal Solutions'}},
-        { path: '/posterminal/deleted',   component: PosterminalDeletedComponent,   meta:{aHref:'posterminal',title:'Posterminal Deleted'}},
+        { path: '/posterminal/active',    component: PosterminalActiveComponent,    meta:{aHref:'posterminal',title:'Posterminal | Active'}},
+        { path: '/posterminal/defective', component: PosterminalDefectiveComponent, meta:{aHref:'posterminal',title:'Posterminal | Defective'}},
+        { path: '/posterminal/solutions', component: PosterminalSolutionComponent, meta:{aHref:'posterminal',title:'Posterminal | Solutions'}},
+        { path: '/posterminal/deleted',   component: PosterminalDeletedComponent,   meta:{aHref:'posterminal',title:'Posterminal | Deleted'}},
+        { path: '/posterminal/request',   component: PosterminalRequestComponent,   meta:{aHref:'posterminal',title:'Posterminal | Request'}},
 
         { path: '/cardomat/active',    component: CardomatActiveComponent,    meta:{aHref:'cardomat',title:'Cardomat Active'}},
         { path: '/cardomat/defective', component: CardomatDefectiveComponent, meta:{aHref:'cardomat',title:'Cardomat Defective'}},

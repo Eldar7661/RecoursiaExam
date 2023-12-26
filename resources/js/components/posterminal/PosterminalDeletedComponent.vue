@@ -51,6 +51,7 @@
     import ModalConfirmComponent from './ModalConfirmComponent.vue';
 
     export default {
+        name: 'PosterminalDeletedComponent',
         components: {
             ModalErrorComponent,
             ModalConfirmComponent,

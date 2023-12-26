@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Posterminal_themes extends Model
+class Posterminal_solution extends Model
 {
     use HasFactory;
 
-    protected $table = 'posterminal_themes';
+    protected $table = 'posterminal_solutions';
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     protected $casts = [
@@ -17,9 +17,8 @@ class Posterminal_themes extends Model
         'updated_at' => 'datetime:d/m/Y H:i',
     ];
 
-    public function solutions()
+    public function theme()
     {
-        return $this->hasMany(Posterminal_solutions::class, 'theme_id', 'id');
+        return $this->belongsTo(Posterminal_theme::class, 'theme_id', 'id');
     }
-
 }

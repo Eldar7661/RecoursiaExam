@@ -81,4 +81,8 @@ Route::group(['namespace' => 'App\Http\Controllers\Posterminal'], function() {
     Route::post('posterminal/solution/create', 'SolutionController@create');
     Route::post('posterminal/solution/update', 'SolutionController@update');
     Route::post('posterminal/solution/delete', 'SolutionController@delete');
+
+    Route::post('posterminal/request/create',  'RequestController@create');
+    Route::post('posterminal/request/show',    'RequestController@show');
+    Route::post('posterminal/request/update',    'RequestController@update');
 });

@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="col-sm-4 text-danger">
-                        {{ error.theme_id }}
+                        {{ errors.theme_id }}
                     </div>
                 </div>
 
@@ -43,7 +43,7 @@
                         </textarea>
                     </div>
                     <div class="col-sm-4 text-danger">
-                        {{ error.title }}
+                        {{ errors.title }}
                     </div>
                 </div>
             </MDBModalBody>
@@ -116,6 +116,7 @@
     } from 'mdb-vue-ui-kit';
 
     export default {
+        name: 'PosterminalSolutionComponent',
         components: {
             ModalErrorComponent,
             ModalConfirmComponent,
@@ -138,7 +139,7 @@
                 posterminal_ModalInput: false,
                 mode: '',
                 currentSolution: {},
-                error: {},
+                errors: {},
             }
         },
         methods: {
@@ -163,7 +164,7 @@
                 });
             },
             createOrUpdateSolution(){
-                this.error = {};
+                this.errors = {};
                 let url = '/api/posterminal/solution/'
                     +(this.mode == 'Add'?'create':'update');
                 axios.post(url, this.currentSolution)
@@ -174,9 +175,9 @@
                     } else {
                         this.$refs.modalError.openModalError(data.data[1]);
                     }
-                }).catch((error) => {
-                    for (let field in error.response.data.errors) {
-                        this.error[field] = error.response.data.errors[field][0];
+                }).catch((errors) => {
+                    for (let field in errors.response.data.errors) {
+                        this.errors[field] = errors.response.data.errors[field][0];
                     }
                 });
             },
@@ -203,6 +204,7 @@
                 );
             },
             openModalInput(mode, solution=null) {
+                this.errors = {};
                 this.posterminal_ModalInput = true;
                 this.mode = mode;
                 if (solution == null) {
@@ -224,7 +226,6 @@
             closeModalInput() {
                 this.posterminal_ModalInput = false;
                 this.mode = '';
-                this.error = {};
             },
         }
     }

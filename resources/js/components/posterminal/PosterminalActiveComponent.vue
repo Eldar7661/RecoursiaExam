@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="col-sm-4 text-danger">
-                        {{ error.status }}
+                        {{ errors.status }}
                     </div>
                 </fieldset>
 
@@ -44,7 +44,7 @@
                             id="posterminal_system_id" v-model="currentPosterminal.system_id">
                     </div>
                     <div class="col-sm-4 text-danger">
-                        {{ error.system_id }}
+                        {{ errors.system_id }}
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
                         </textarea>
                     </div>
                     <div class="col-sm-4 text-danger">
-                        {{ error.address }}
+                        {{ errors.address }}
                     </div>
                 </div>
 
@@ -69,7 +69,7 @@
                             id="posterminal_serial_number" v-model="currentPosterminal.serial_number">
                     </div>
                     <div class="col-sm-4 text-danger">
-                        {{ error.serial_number }}
+                        {{ errors.serial_number }}
                     </div>
                 </div>
             </MDBModalBody>
@@ -170,7 +170,7 @@
                 posterminal_ModalInput: false,
                 mode: '',
                 currentPosterminal: {},
-                error: {},
+                errors: {},
             }
         },
         methods: {
@@ -185,7 +185,7 @@
                 });
             },
             createOrUpdate(){
-                this.error = {};
+                this.errors = {};
                 let url = '/api/posterminal/'
                     +(this.mode == 'Add'?'create':'update');
                 axios.post(url, this.currentPosterminal)
@@ -196,9 +196,9 @@
                     } else {
                         this.$refs.modalError.openModalError(data.data[1]);
                     }
-                }).catch((error) => {
-                    for (let field in error.response.data.errors) {
-                        this.error[field] = error.response.data.errors[field][0];
+                }).catch((errors) => {
+                    for (let field in errors.response.data.errors) {
+                        this.errors[field] = errors.response.data.errors[field][0];
                     }
                 });
             },
@@ -225,6 +225,7 @@
                 );
             },
             openModalInput(mode, posterminal=null) {
+                this.errors = {};
                 this.posterminal_ModalInput = true;
                 this.mode = mode;
                 if (posterminal==null) {
@@ -248,7 +249,6 @@
             closeModalInput() {
                 this.posterminal_ModalInput = false;
                 this.mode = '';
-                this.error = {};
             },
         },
     }
