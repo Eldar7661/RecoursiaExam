@@ -136,7 +136,7 @@
                 <tbody>
                     <tr v-for="request in requests" :class="displayRequest(request.status)">
                         <th scope="row">{{ request.id }}</th>
-                        <td :class="'fw-bold '+statusColor(request.status)">{{ convertStatus(request.status, 1) }}</td>
+                        <td :class="'fw-bold '+statusColor(request.status)">{{ convertStatus(request.status) }}</td>
                         <td>{{ request.posterminal.system_id }}</td>
                         <td>{{ request.theme.title }}</td>
                         <td>{{ request.solution==null?'- - - -':request.solution.title }}</td>
@@ -144,7 +144,7 @@
                         <td>{{ request.updated_at }}</td>
                         <td>
                             <button :class="'btn-sm btn btn-dark me-2'+(request.status==0?'':' d-none')" data-mdb-ripple-init
-                                @click="changeStatus(request, 1)" title="In-Work">
+                                @click="changeStatus(request, 1)" title="To Work">
                                 <i class="fa-solid fa-wrench"></i>
                             </button>
                             <button :class="'btn-sm btn btn-dark me-2'+(request.status==1?'':' d-none')" data-mdb-ripple-init
@@ -153,7 +153,7 @@
                             </button>
                             <button :class="'btn-sm btn btn-dark me-2'
                                 +(request.status==0||request.status==1?'':' d-none')" data-mdb-ripple-init
-                                @click="changeStatus(request, 3)" title="Canceled">
+                                @click="changeStatus(request, 3)" title="Cancel">
                                 <i class="fa-solid fa-ban"></i>
                             </button>
                         </td>
@@ -287,7 +287,7 @@
                     });
                     this.openModalInputAddSolution();
                 } else {
-                    let confirmationQuestion = this.convertStatus(status)+' request with ID: '+request.id+' ?';
+                    let confirmationQuestion = this.convertStatus(status, 'title')+' request with ID: '+request.id+' ?';
                     this.$refs.modalConfirm.openModalConfirme(
                         confirmationQuestion,
                         function (arg) {
@@ -342,12 +342,13 @@
                     return 'd-none';
                 }
             },
-            convertStatus(status, caps = false) {
-                const decode = ['Open', 'In-Work', 'Finished', 'Canceled'];
-                if (caps) {
-                    return decode[status].toUpperCase();
-                } else {
-                    return decode[status];
+            convertStatus(status, mode = 'status') {
+                const decodeStatus = ['OPENED ', 'IN WORK', 'FINISHED', 'CANCELED'];
+                const decodeTitle = ['Open', 'To Work', 'Finish', 'Cancel'];
+                if (mode == 'status') {
+                    return decodeStatus[status];
+                } else if (mode == 'title') {
+                    return decodeTitle[status];
                 }
             },
             statusColor(status) {
