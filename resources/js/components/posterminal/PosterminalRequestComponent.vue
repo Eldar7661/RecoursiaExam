@@ -60,7 +60,7 @@
             v-model="ModalInputAddSolution"
         >
             <MDBModalHeader>
-                <MDBModalTitle id="ModalInputLabel">Add Solution</MDBModalTitle>
+                <MDBModalTitle id="ModalInputLabel">Close request</MDBModalTitle>
             </MDBModalHeader>
             <MDBModalBody>
                 <div class="row mt-4">
@@ -83,7 +83,7 @@
             </MDBModalBody>
             <MDBModalFooter>
                 <div class="col">
-                    <MDBBtn class="btn btn-dark ms-2" @click="update">
+                    <MDBBtn class="btn btn-dark ms-2" @click="close">
                         Finish
                     </MDBBtn>
                 </div>
@@ -122,11 +122,12 @@
                         <th scope="col">created at</th>
                         <th scope="col">updated at</th>
                         <th scope="col">
-                            <button class="btn-sm btn btn-light mt-1 me-2" data-mdb-ripple-init data-mdb-ripple-color="dark"
+                            <button :class="'btn-sm btn btn-light mt-1 me-2'+(userRoleDisplayBtn('create')?'':' d-none')" data-mdb-ripple-init
+                                data-mdb-ripple-color="dark"
                                 @click="openModalInput" title="Add">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
-                            <button class="btn-sm btn btn-light me-2" data-mdb-ripple-init data-mdb-ripple-color="dark"
+                            <button class="btn-sm btn btn-light mt-1 me-2" data-mdb-ripple-init data-mdb-ripple-color="dark"
                                 @click="showRequests" title="Update list">
                                 <i class="fa-solid fa-rotate-right"></i>
                             </button>
@@ -143,17 +144,19 @@
                         <td>{{ request.created_at }}</td>
                         <td>{{ request.updated_at }}</td>
                         <td>
-                            <button :class="'btn-sm btn btn-dark me-2'+(request.status==0?'':' d-none')" data-mdb-ripple-init
-                                @click="changeStatus(request, 1)" title="To Work">
+                            <button :class="'btn-sm btn btn-dark mt-1 me-2'
+                                +(request.status==0&&userRoleDisplayBtn('toWork')?'':' d-none')" data-mdb-ripple-init
+                                @click="inWork(request.id)" title="To Work">
                                 <i class="fa-solid fa-wrench"></i>
                             </button>
-                            <button :class="'btn-sm btn btn-dark me-2'+(request.status==1?'':' d-none')" data-mdb-ripple-init
-                                @click="changeStatus(request, 2)" title="Finish">
+                            <button :class="'btn-sm btn btn-dark mt-1 me-2'
+                                +(request.status==1&&userRoleDisplayBtn('finish')?'':' d-none')" data-mdb-ripple-init
+                                @click="finish(request)" title="Finish">
                                 <i class="fa-solid fa-check"></i>
                             </button>
-                            <button :class="'btn-sm btn btn-dark me-2'
-                                +(request.status==0||request.status==1?'':' d-none')" data-mdb-ripple-init
-                                @click="changeStatus(request, 3)" title="Cancel">
+                            <button :class="'btn-sm btn btn-dark mt-1 me-2'
+                                +((request.status==0||request.status==1)&&userRoleDisplayBtn('cancel')?'':' d-none')" data-mdb-ripple-init
+                                @click="cancel(request)" title="Cancel">
                                 <i class="fa-solid fa-ban"></i>
                             </button>
                         </td>
@@ -193,8 +196,8 @@
         },
         mounted() {
             this.showRequests();
-            this.getPosterminals();
-            this.getThemes();
+            // this.getPosterminals();
+            // this.getThemes();
         },
         data() {
             return {
@@ -210,31 +213,33 @@
             }
         },
         methods: {
-            getPosterminals() {
-                axios.post('/api/posterminal/lol')
-                .then((data) => {
-                    if (data.data[0] == '200') {
-                        this.posterminals = data.data[1];
-                    } else {
-                        this.$refs.modalError.openModalError(data.data[1]);
-                    }
-                });
-            },
-            getThemes() {
-                axios.post('/api/posterminal/theme/show')
-                .then((data) => {
-                    if (data.data[0] == '200') {
-                        this.themes = data.data[1];
-                    } else {
-                        this.$refs.modalError.openModalError(data.data[1]);
-                    }
-                });
-            },
+            // getPosterminals() {
+            //     axios.post('/api/posterminal/lol')
+            //     .then((data) => {
+            //         if (data.data[0] == '200') {
+            //             this.posterminals = data.data[1];
+            //         } else {
+            //             this.$refs.modalError.openModalError(data.data[1]);
+            //         }
+            //     });
+            // },
+            // getThemes() {
+            //     axios.post('/api/posterminal/theme/show')
+            //     .then((data) => {
+            //         if (data.data[0] == '200') {
+            //             this.themes = data.data[1];
+            //         } else {
+            //             this.$refs.modalError.openModalError(data.data[1]);
+            //         }
+            //     });
+            // },
             showRequests() {
                 axios.post('/api/posterminal/request/show')
                 .then((data) => {
                     if (data.data[0] == '200') {
                         this.requests = data.data[1];
+                        this.posterminals = data.data[2];
+                        this.themes = data.data[3];
                     } else {
                         this.$refs.modalError.openModalError(data.data[1]);
                     }
@@ -258,10 +263,41 @@
                     }
                 });
             },
-            update() {
-                axios.post('/api/posterminal/request/update', {
+            inWork(id) {
+                let confirmationQuestion =  'To Work request with ID: '+id+' ?';
+                this.$refs.modalConfirm.openModalConfirme(
+                    confirmationQuestion,
+                    function (arg) {
+                        axios.post('/api/posterminal/request/inwork', {
+                            id: arg.id,
+                        })
+                        .then((data) => {
+                            if (data.data[0] == '200') {
+                                arg.vue.requests = data.data[1];
+                            } else {
+                                arg.vue.$refs.modalError.openModalError(data.data[1]);
+                            }
+                        });
+                    },
+                    {
+                        vue: this,
+                        id: id
+                    }
+                );
+            },
+            finish(request) {
+                this.resetCurrenRequest();
+                this.currenRequest.id = request.id;
+                this.themes.forEach((theme) => {
+                if (theme.id == request.theme.id) {
+                        this.currenRequest.theme = theme;
+                    }
+                });
+                this.openModalInputAddSolution();
+            },
+            close() {
+                axios.post('/api/posterminal/request/close', {
                     id: this.currenRequest.id,
-                    status: this.currenRequest.status,
                     solution_id: this.currenRequest.solution.id,
                 })
                 .then((data) => {
@@ -271,33 +307,33 @@
                     } else {
                         this.$refs.modalError.openModalError(data.data[1]);
                     }
+                }).catch((errors) => {
+                    for (let field in errors.response.data.errors) {
+                        this.errors[field] = errors.response.data.errors[field][0];
+                    }
                 });
             },
-            changeStatus(request, status) {
-                this.currenRequest = {
-                    id: request.id,
-                    status: status,
-                    solution: {},
-                }
-                if (status == 2) {
-                    this.themes.forEach((theme) => {
-                        if (theme.id == request.theme.id) {
-                            this.currenRequest.theme = theme;
-                        }
-                    });
-                    this.openModalInputAddSolution();
-                } else {
-                    let confirmationQuestion = this.convertStatus(status, 'title')+' request with ID: '+request.id+' ?';
-                    this.$refs.modalConfirm.openModalConfirme(
-                        confirmationQuestion,
-                        function (arg) {
-                            arg.vue.update();
-                        },
-                        {
-                            vue: this,
-                        }
-                    );
-                }
+            cancel(request) {
+                let confirmationQuestion = 'Cancel request with ID: '+request.id+' ?';
+                this.$refs.modalConfirm.openModalConfirme(
+                    confirmationQuestion,
+                    function (arg) {
+                        axios.post('/api/posterminal/request/cancel', {
+                            id: arg.request.id,
+                        })
+                        .then((data) => {
+                            if (data.data[0] == '200') {
+                                arg.vue.requests = data.data[1];
+                            } else {
+                                arg.vue.$refs.modalError.openModalError(data.data[1]);
+                            }
+                        });
+                    },
+                    {
+                        vue: this,
+                        request: request
+                    }
+                );
             },
             changeModeDisplay(mode) {
                 this.modeDisplay = mode;
@@ -316,6 +352,7 @@
 
 
             openModalInputAddSolution() {
+                this.errors = {};
                 this.ModalInputAddSolution = true;
             },
             closeModalInputAddSolution() {
@@ -324,6 +361,7 @@
             },
             resetCurrenRequest() {
                 this.currenRequest = {
+                    id: 0,
                     posterminal: {},
                     theme: {},
                     solution: {}
@@ -342,15 +380,6 @@
                     return 'd-none';
                 }
             },
-            convertStatus(status, mode = 'status') {
-                const decodeStatus = ['OPENED ', 'IN WORK', 'FINISHED', 'CANCELED'];
-                const decodeTitle = ['Open', 'To Work', 'Finish', 'Cancel'];
-                if (mode == 'status') {
-                    return decodeStatus[status];
-                } else if (mode == 'title') {
-                    return decodeTitle[status];
-                }
-            },
             statusColor(status) {
                 if (status == 0) {
                     return 'text-success';
@@ -360,6 +389,32 @@
                     return 'text-danger'
                 }
             },
+            convertStatus(status) {
+                const decodeStatus = ['OPENED ', 'IN WORK', 'FINISHED', 'CANCELED'];
+                return decodeStatus[status];
+            },
+            userRoleDisplayBtn(btn) {
+                const role = this.$root.user.role;
+                if (role == 'Admin') {
+                    return true;
+                } else if (role == 'Worker') {
+                    if (btn == 'toWork') {
+                        return true;
+                    } else if (btn == 'finish') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else if (role == 'Manager') {
+                    if (btn == 'toWork') {
+                        return false;
+                    } else if (btn == 'finish') {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            }
         }
     }
 </script>

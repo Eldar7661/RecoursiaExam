@@ -1,6 +1,8 @@
 img[alt="logo"] {
     width: 100px;
 }
+.table {width: 1400px;}
+
 .nav-link { color: black;}
 .nav-link:hover, .nav-link:focus,
 .router-link-active, .router-link-active:focus,

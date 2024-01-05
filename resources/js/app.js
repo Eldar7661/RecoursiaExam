@@ -13,18 +13,8 @@ import './bootstrap';
 import { createApp } from 'vue';
 import NavigationComponent from './components/NavigationComponent.vue';
 import router from './router';
+
 const app = createApp(NavigationComponent);
-router.beforeEach((to, from, next) => {
-    let selectorAFrom = document.querySelector(`a[href="${from.meta.aHref}"]`);
-    let selectorATo = document.querySelector(`a[href="${to.meta.aHref}"]`);
-    if (selectorATo) {
-        selectorATo.classList.add('nav-btn-active');
-    } if (selectorAFrom && selectorAFrom != selectorATo) {
-        selectorAFrom.classList.remove('nav-btn-active');
-    }
-    document.title = to.meta.title || 'Recoursia 69';
-    next();
-});
 app.use(router);
 
 app.mount('#app');
