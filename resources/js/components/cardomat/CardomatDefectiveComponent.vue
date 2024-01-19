@@ -28,7 +28,7 @@
                     <td>{{ defective.title }}</td>
                     <td>{{ defective.description }}</td>
                     <td>{{ defective.created_at }}</td>
-                    <td>{{ defective.updated_at }}</td> 
+                    <td>{{ defective.updated_at }}</td>
                     <td>
                         <div style="display: flex; gap: 3px;">
                             <button type="button" class="btn btn-sm btn-dark" @click="showModal('edit', defective)"><i class="fa-regular fa-pen-to-square"></i></button>
@@ -183,7 +183,7 @@
                     this.deleteDefective(defective);
                 }
             },
-                
+
             deleteDefective: function (defective) {
                 axios.delete(`/api/cardomat/theme/delete/${defective.id}`)
                 .then(response => {

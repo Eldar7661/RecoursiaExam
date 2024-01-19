@@ -1,12 +1,15 @@
 <?php
+
 use App\Http\Controllers\Cardomat\CardomatController;
 use App\Http\Controllers\Cardomat\CardomatThemeController;
 use App\Http\Controllers\Cardomat\CardomatRequestsController;
 use App\Http\Controllers\Cardomat\CardomatSolutionsController;
+
 use App\Http\Controllers\Postamat\PostamatsController;
 use App\Http\Controllers\Postamat\ThemesController;
 use App\Http\Controllers\Postamat\SolutionsController;
 use App\Http\Controllers\Postamat\RequestsController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +50,7 @@ Route::delete('/cardomat/delete/{id}', [CardomatController::class, 'delete']);
 Route::get('/cardomat/deleted', [CardomatController::class, 'getDeletedCards']);
 Route::post('/cardomat/restore/{id}', [CardomatController::class, 'restore']);
 
+
 Route::controller(PostamatsController::class)->group(function() {
     Route::get('/postamat/index', 'index');
     Route::post('/postamat/create', 'create');
@@ -76,26 +80,61 @@ Route::controller(RequestsController::class)->group(function() {
     Route::post('/postamat/requests/update', 'update');
 });
 
-Route::group(['namespace' => 'App\Http\Controllers\Posterminal'], function() {
-    Route::post('posterminal/lol',             'PosterminalController@show');
-    Route::post('posterminal/create',          'PosterminalController@create');
-    Route::post('posterminal/update',          'PosterminalController@update');
-    Route::post('posterminal/delete',          'PosterminalController@delete');
 
-    Route::post('posterminal/restore',         'PosterminalController@restore');
-    Route::post('posterminal/deleted/show',    'PosterminalController@deletedShow');
+Route::group([
+    'namespace' => 'App\Http\Controllers\Posterminal',
+    'middleware' => 'jwt.auth',
+    'prefix' => 'posterminal'
+], function() {
 
-    Route::post('posterminal/theme/show',      'ThemeController@show');
-    Route::post('posterminal/theme/create',    'ThemeController@create');
-    Route::post('posterminal/theme/update',    'ThemeController@update');
-    Route::post('posterminal/theme/delete',    'ThemeController@delete');
+    Route::post('lol',             'PosterminalController@show');
+    Route::post('create',          'PosterminalController@create');
+    Route::post('update',          'PosterminalController@update');
+    Route::post('delete',          'PosterminalController@delete');
+    Route::post('restore',         'PosterminalController@restore');
+    Route::post('deleted/show',    'PosterminalController@deletedShow');
 
-    Route::post('posterminal/solution/show',   'SolutionController@show');
-    Route::post('posterminal/solution/create', 'SolutionController@create');
-    Route::post('posterminal/solution/update', 'SolutionController@update');
-    Route::post('posterminal/solution/delete', 'SolutionController@delete');
+    Route::post('theme/show',      'ThemeController@show');
+    Route::post('theme/create',    'ThemeController@create');
+    Route::post('theme/update',    'ThemeController@update');
+    Route::post('theme/delete',    'ThemeController@delete');
 
-    Route::post('posterminal/request/create',  'RequestController@create');
-    Route::post('posterminal/request/show',    'RequestController@show');
-    Route::post('posterminal/request/update',    'RequestController@update');
+    Route::post('solution/show',   'SolutionController@show');
+    Route::post('solution/create', 'SolutionController@create');
+    Route::post('solution/update', 'SolutionController@update');
+    Route::post('solution/delete', 'SolutionController@delete');
+
+    Route::post('request/show',    'RequestController@show');
+    Route::post('request/create',  'RequestController@create');
+    Route::post('request/inwork',  'RequestController@inWork');
+    Route::post('request/close',  'RequestController@close');
+    Route::post('request/cancel',  'RequestController@cancel');
+
 });
+
+Route::group([
+    'middleware' => 'jwt.auth'
+], function() {
+    Route::group([
+        'namespace' => 'App\Http\Controllers',
+        'prefix' => 'user',
+    ], function() {
+        Route::post('show',   'UserController@show');
+        Route::post('create', 'UserController@create');
+        Route::post('update', 'UserController@update');
+        Route::post('delete', 'UserController@delete');
+    });
+});
+
+Route::group([
+    'namespace' => 'App\Http\Controllers',
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('login',   'AuthController@login');
+    Route::post('logout',  'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me',      'AuthController@me');
+});
+
+Route::post('user/deleteMe', 'App\Http\Controllers\UserController@deleteMe');

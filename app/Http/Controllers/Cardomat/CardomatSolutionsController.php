@@ -26,9 +26,9 @@ class CardomatSolutionsController extends Controller
             'theme_id' => $request->theme_id,
             'title' => $request->title,
         ]);
-    
+
         $solutions = Cardomat_solutions::with('theme')->get();
-    
+
         return response()->json([
             'status' => true,
             'message' => 'Product successfully created!',
@@ -52,24 +52,24 @@ class CardomatSolutionsController extends Controller
         ], 200);
     }
 
-    public function delete($id) 
+    public function delete($id)
     {
         $solutions = Cardomat_solutions::find($id);
-    
+
         if (!$solutions) {
             return response()->json([
-                'status' => false, 
+                'status' => false,
                 'message' => 'solution not found'
             ], 404);
         }
-    
+
         $solutions->delete();
-    
+
         $solutions = Cardomat_solutions::with('theme')->get();
-    
+
         return response()->json([
-            'status' => true, 
-            'message' => 'solution deleted successfully', 
+            'status' => true,
+            'message' => 'solution deleted successfully',
             'solutions' => $solutions,
         ]);
     }

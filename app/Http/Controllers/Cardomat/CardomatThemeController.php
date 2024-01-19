@@ -26,9 +26,9 @@ class CardomatThemeController extends Controller
             'title' => $request->title,
             'description' => $request->description,
         ]);
-    
+
         $defectives = Cardomat_themes::all();
-    
+
         return response()->json([
             'status' => true,
             'message' => 'Product successfully created!',
@@ -52,24 +52,24 @@ class CardomatThemeController extends Controller
         ], 200);
     }
 
-    public function delete($id) 
+    public function delete($id)
     {
         $defective = Cardomat_themes::find($id);
-    
+
         if (!$defective) {
             return response()->json([
-                'status' => false, 
+                'status' => false,
                 'message' => 'defective not found'
             ], 404);
         }
-    
+
         $defective->delete();
-    
+
         $defectives = Cardomat_themes::all();
-    
+
         return response()->json([
-            'status' => true, 
-            'message' => 'defective deleted successfully', 
+            'status' => true,
+            'message' => 'defective deleted successfully',
             'defectives' => $defectives,
         ]);
     }

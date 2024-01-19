@@ -29,7 +29,7 @@
                     <td>{{ deletedCard.deleted_at }}</td>
                     <td style="display: flex; gap: 3px;">
                         <button type="button" class="btn btn-sm btn-dark" @click="restoredeletedCard(deletedCard)"><i class="fa-solid fa-trash-arrow-up"></i></button>
-                    </td>   
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -74,6 +74,5 @@
             },
         }
     }
-    
-</script>
 
+</script>

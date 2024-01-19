@@ -12,6 +12,7 @@ class PosterminalController extends Controller
 {
     public function show()
     {
+        $this->authorize('posterminalAllMethods', auth()->user());
         try {
             $query = Posterminal::all();
             return response()->json(['200', $query]);
@@ -23,6 +24,7 @@ class PosterminalController extends Controller
 
     public function create(CreateRequest $data)
     {
+        $this->authorize('posterminalAllMethods', auth()->user());
         $posterminal = $data->validated();
         try {
             Posterminal::create($posterminal);
@@ -35,6 +37,7 @@ class PosterminalController extends Controller
 
     public function update(UpdateRequest $data)
     {
+        $this->authorize('posterminalAllMethods', auth()->user());
         $posterminal = $data->validated();
         try {
             Posterminal::find($posterminal['id'])->update($posterminal);
@@ -47,6 +50,7 @@ class PosterminalController extends Controller
 
     public function delete(Request $data)
     {
+        $this->authorize('posterminalAllMethods', auth()->user());
         try {
             $posterminal = Posterminal::find($data['id']);
             $posterminal->update(['status' => '0']);
@@ -60,6 +64,7 @@ class PosterminalController extends Controller
 
     public function restore(Request $data)
     {
+        $this->authorize('posterminalAllMethods', auth()->user());
         try {
             $posterminal = Posterminal::onlyTrashed()
                 ->where('id', $data['id'])
@@ -73,6 +78,7 @@ class PosterminalController extends Controller
 
     public function deletedShow()
     {
+        $this->authorize('posterminalAllMethods', auth()->user());
         try {
             $query = Posterminal::onlyTrashed()->get();
             return response()->json(['200', $query]);

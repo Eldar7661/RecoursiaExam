@@ -12,6 +12,7 @@ class ThemeController extends Controller
 {
     public function show()
     {
+        $this->authorize('themeAllMethods', auth()->user());
         try {
             $query = Posterminal_theme::with('solutions')->get();
             return response()->json(['200', $query]);
@@ -23,6 +24,7 @@ class ThemeController extends Controller
 
     public function create(ThemeCreateRequest $data)
     {
+        $this->authorize('themeAllMethods', auth()->user());
         $theme = $data->validated();
         try {
             Posterminal_theme::create($theme);
@@ -35,6 +37,7 @@ class ThemeController extends Controller
 
     public function update(ThemeUpdateRequest $data)
     {
+        $this->authorize('themeAllMethods', auth()->user());
         $theme = $data->validated();
         try {
             Posterminal_theme::find($theme['id'])->update($theme);
@@ -47,6 +50,7 @@ class ThemeController extends Controller
 
     public function delete(Request $data)
     {
+        $this->authorize('themeAllMethods', auth()->user());
         try {
             Posterminal_theme::find($data['id'])->delete();
         } catch (\Throwable $th) {

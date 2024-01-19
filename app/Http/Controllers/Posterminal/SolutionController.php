@@ -12,6 +12,7 @@ class SolutionController extends Controller
 {
     public function show()
     {
+        $this->authorize('solutionAllMethods', auth()->user());
         try {
             $query = Posterminal_solution::with('theme')->get();
             return response()->json(['200', $query]);
@@ -23,6 +24,7 @@ class SolutionController extends Controller
 
     public function create(SolutionCreateRequest $data)
     {
+        $this->authorize('solutionAllMethods', auth()->user());
         $solution = $data->validated();
         try {
             Posterminal_solution::create($solution);
@@ -35,6 +37,7 @@ class SolutionController extends Controller
 
     public function update(SolutionUpdateRequest $data)
     {
+        $this->authorize('solutionAllMethods', auth()->user());
         $solution = $data->validated();
         try {
             Posterminal_solution::find($solution['id'])->update($solution);
@@ -47,6 +50,7 @@ class SolutionController extends Controller
 
     public function delete(Request $data)
     {
+        $this->authorize('solutionAllMethods', auth()->user());
         try {
             Posterminal_solution::find($data['id'])->delete();
         } catch (\Throwable $th) {

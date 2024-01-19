@@ -41,7 +41,7 @@
                             <button type="button" class="btn btn-sm btn-dark" @click="showModal('edit', card)"><i class="fa-regular fa-pen-to-square"></i></button>
                             <button type="button" class="btn btn-sm btn-dark" @click="confirmDelete(card)"><i class="fas fa-trash"></i></button>
                         </div>
-                    </td>   
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -240,13 +240,13 @@
                     });
                 }
             },
-            
+
             confirmDelete: function (card) {
                 if (confirm("Вы уверены, что хотите удалить эту карту?")) {
                     this.deleteCard(card);
                 }
             },
-            
+
             deleteCard: function (card) {
                 axios.delete(`/api/cardomat/delete/${card.id}`)
                 .then(response => {
@@ -273,5 +273,5 @@
             },
         }
     }
-    
+
 </script>

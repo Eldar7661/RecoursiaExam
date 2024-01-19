@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cards', function (Blueprint $table) {
+        Schema::create('defective_postamats', function (Blueprint $table) {
             $table->id();
-            $table->string('address', 255);
-            $table->tinyInteger('status')->default(0);
-            $table->string('serial_number', 10);
-            $table->string('system_id', 8);
+            $table->boolean('active')->default(true);
+            $table->string('title', 50)->nullable();
+            $table->string('description', 255)->nullable();
             $table->timestamps();
+
             $table->softDeletes();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cards');
+        Schema::dropIfExists('defective_postamats');
     }
 };

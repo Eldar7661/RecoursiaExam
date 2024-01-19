@@ -10,30 +10,30 @@ use App\Http\Requests\Cardomat\CardomatUpdateRequest;
 use Illuminate\Http\Request;
 
 class CardomatController extends Controller
-{    
+{
     /**
      * index
      *
      *  Получение всех продуктов для списка кардоматов
-     * 
+     *
      * @return JsonResponse
      */
     public function index(): JsonResponse
     {
         $cards = Card::all();
-    
+
         return response()->json([
             'status' => true,
             'message' => 'Success',
             'cards' => $cards
         ], 200);
     }
-    
+
     /**
      * create
      *
      * Создание нового продукта в список покупок и возвращение полного списка покупок вместе с новым продуктом
-     * 
+     *
      * @param  mixed $request
      * @return JsonResponse
      */
@@ -60,7 +60,7 @@ class CardomatController extends Controller
      * edit
      *
      * Обноваление продукта и возвращение полного списка покупок с обновленным продуктом
-     * 
+     *
      * @param  mixed $request
      * @return JsonResponse
      */
@@ -84,24 +84,24 @@ class CardomatController extends Controller
         ], 200);
     }
 
-    public function delete($id) 
+    public function delete($id)
     {
         $card = Card::find($id);
-    
+
         if (!$card) {
             return response()->json([
-                'status' => false, 
+                'status' => false,
                 'message' => 'Card not found'
             ], 404);
         }
-    
+
         $card->delete();
-    
+
         $cards = Card::all();
-    
+
         return response()->json([
-            'status' => true, 
-            'message' => 'Card deleted successfully', 
+            'status' => true,
+            'message' => 'Card deleted successfully',
             'cards' => $cards
         ]);
     }

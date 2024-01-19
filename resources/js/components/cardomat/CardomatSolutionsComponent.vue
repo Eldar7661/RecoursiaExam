@@ -157,7 +157,7 @@ export default {
                         this.currentSolution = solution;
                     }
                 }
-            },  
+            },
 
         loadThemes() {
             axios.get('/api/cardomat/themes/find')
@@ -205,7 +205,7 @@ export default {
                 this.deleteSolution(solution);
             }
         },
-            
+
         deleteSolution: function (solution) {
             axios.delete(`/api/cardomat/solutions/delete/${solution.id}`)
             .then(response => {

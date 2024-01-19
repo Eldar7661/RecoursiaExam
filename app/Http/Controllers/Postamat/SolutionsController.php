@@ -27,7 +27,7 @@ class SolutionsController extends Controller
         $data = $request->validated();
 
         PostamatSolution::create($data);
-        
+
         return $this->index();
     }
 

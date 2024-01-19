@@ -17,7 +17,7 @@ class Card extends Model
         'status',
         'serial_number',
     ];
-    
+
     protected $guarded = ['id'];
 
     public function cardomat_requests()
