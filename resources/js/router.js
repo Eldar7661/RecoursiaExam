@@ -48,7 +48,7 @@ const router = createRouter({
         // { path: '/terminal/deleted',   name: 'terminal.deleted',     component: TerminalDeletedComponent,     meta:{aHref:'terminal',title:'Terminal Deleted'}},
 
         { path: '/postamat/active',       name: 'postamat.active',      component: PostamatActiveComponent,      meta:{aHref:'postamat',title:'Postamat Active'}},
-        { path: '/postamat/defective',    name: 'postamat.defective',   component: PostamatDefectiveComponent,   meta:{aHref:'postamat',title:'Postamat Defective'}},
+        { path: '/postamat/defective',    name: 'postamat.defective',   component: PostamatThemesComponent,   meta:{aHref:'postamat',title:'Postamat Defective'}},
         { path: '/postamat/solutions',    name: 'postamat.solutions',   component: PostamatSolutionsComponent,   meta:{aHref:'postamat',title:'Postamat Solutions'}},
         { path: '/postamat/deleted',      name: 'postamat.deleted',     component: PostamatDeletedComponent,     meta:{aHref:'postamat',title:'Postamat Deleted'}},
         { path: '/postamat/requests',     name: 'postamat.requests',    component: PostamatRequestsComponent,    meta:{aHref:'postamat',title:'Postamat Requests'}},
